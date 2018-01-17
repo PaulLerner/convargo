@@ -142,19 +142,33 @@ const actors = [{
 }];
 
 //exercice 1
-
-for(var i =0;i<deliveries.length;i++)
-	{
-		for(var j =0; j < truckers.length;j++)
+function GetTrucker(truckerId)
+{
+	for(var j =0; j < truckers.length;j++)
 			{
 				
-				if(deliveries[i].truckerId==truckers[j].id)
+				if(truckerId==truckers[j].id)
 					{
-						
-						deliveries[i].price= deliveries[i].distance*truckers[j].pricePerKm+deliveries[i].volume*truckers[j].pricePerVolume;
+						return truckers[j];
 					}
 			}
+	return {};
+}
+for(var i =0;i<deliveries.length;i++)
+	{
+		var trucker = GetTrucker(deliveries[i].truckerId);
+		deliveries[i].price= deliveries[i].distance*trucker.pricePerKm+deliveries[i].volume*trucker.pricePerVolume;
+					
 	}
+
+console.log("Deliveries after exercice 1 : ");
+console.log(deliveries);
+//exercice 2
+/***price per m3**
+
+* decreases by **10% after 5 m3**
+* decreases by **30% after 10 m3**
+* decreases by **50% after 25 m3***/
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
