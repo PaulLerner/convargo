@@ -141,6 +141,20 @@ const actors = [{
   }]
 }];
 
+//exercice 1
+
+for(var i =0;i<deliveries.length;i++)
+	{
+		for(var j =0; j < truckers.length;j++)
+			{
+				
+				if(deliveries[i].truckerId==truckers[j].id)
+					{
+						
+						deliveries[i].price= deliveries[i].distance*truckers[j].pricePerKm+deliveries[i].volume*truckers[j].pricePerVolume;
+					}
+			}
+	}
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
