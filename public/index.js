@@ -105,7 +105,7 @@ const actors = [{
     'amount': 0
   }]
 }, {
-  'rentalId': '65203b0a-a864-4dea-81e2-e389515752a8',
+  'deliveryId': '65203b0a-a864-4dea-81e2-e389515752a8',
   'payment': [{
     'who': 'shipper',
     'type': 'debit',
@@ -128,7 +128,7 @@ const actors = [{
     'amount': 0
   }]
 }, {
-  'rentalId': '94dab739-bd93-44c0-9be1-52dd07baa9f6',
+  'deliveryId': '94dab739-bd93-44c0-9be1-52dd07baa9f6',
   'payment': [{
     'who': 'shipper',
     'type': 'debit',
@@ -172,8 +172,6 @@ for(var i =0;i<deliveries.length;i++)
 					
 	}
 
-console.log("Deliveries after exercice 1 : ");
-console.log(deliveries);
 //exercice 2
 /***price per m3**
 
@@ -200,9 +198,6 @@ for(var i =0;i<deliveries.length;i++)
 			}
 					
 	}
-console.log("Deliveries after exercice 2 : ");
-console.log(deliveries);
-
 //exercice 3
 /*Convargo take a 30% commission on the shipping price to cover their costs.
 
@@ -217,19 +212,68 @@ for(var i =0;i<deliveries.length;i++)
 	{
 		
 		var commission = deliveries[i].price*comPercentage;
-		//console.log(commission);
+		
 		deliveries[i].commission.insurance=commission*insPercentage;
 		commission-=deliveries[i].commission.insurance;
 		
-		//console.log(commission);
 		deliveries[i].commission.treasury= Math.ceil(deliveries[i].distance/treasuryRange)*treasuryFee;
 		commission-=deliveries[i].commission.treasury;
 		
-		//console.log(commission);
 		deliveries[i].commission.convargo+=commission;
 	}
-console.log("Deliveries after exercice 3 : ");
-console.log(deliveries);
+
+//exercice 4
+/*In case of an accident/theft, convargo applies a 1000€ deductible.
+
+The shipper can reduce the deductible amount from 1000€ to 200€ with a `deductible option` for a few more euros per volume.
+
+#### The deductible
+
+The driver is charged an additional 1€/m3 when he chooses the `deductible reduction` option.
+
+**The additional charge goes to convargo, not to the trucker.**
+
+#### Just tell me what to do
+
+Compute the new amount price if the shipper subscribed to `deductible option`.*/
+for(var i =0;i<deliveries.length;i++)
+	{
+		if(deliveries[i].options.deductibleReduction)
+			{
+				deliveries[i].price+=deliveries[i].volume*1;
+			}
+	}
+
+//exercice 5
+/*
+- **the shipper** must pay the **shipping price** and the **(optional) deductible reduction**
+- **the trucker** receives the **shipping price** minus the **commission**
+- **the insurance** receives its part of the **commission**
+- **the Treasury** receives its part of the tax **commission**
+- **convargo receives** its part of the **commission**, plus the **deductible reduction***/
+/*
+function GetDelivery(deliveryId)
+{
+	for(var i=0; i < deliveries.length;i++)
+		{
+			if(deliveries[i].id==deliveryId)
+				{
+					
+				return deliveries[i];
+				}
+		}
+	return {};
+}
+for(var i=0; i< actors.length;i++)
+	{
+		var delivery = GetDelivery(actors[i].deliveryId);
+		actors[i].payment
+	}
+*/
+console.log("Truckers :");
 console.log(truckers);
+console.log("Deliveries :");
 console.log(deliveries);
+
+console.log("Actors :");
 console.log(actors);
