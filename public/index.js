@@ -1,5 +1,15 @@
 'use strict';
+//constant declarations
+//for exercice 2
+		const decrease5m3=0.1;
+		const decrease10m3=0.3;
+		const decrease25m3=0.5;
 
+//for exercice 3
+const comPercentage=0.3;
+		const insPercentage=0.5;
+		const treasuryFee=1;
+		const treasuryRange=500;
 //list of truckers
 //useful for ALL 5 exercises
 var truckers = [{
@@ -64,7 +74,8 @@ var deliveries = [{
   'price': 0,
   'commission': {
     'insurance': 0,
-    'convargo': 0
+    'convargo': 0,
+	'treasury':0
   }
 }];
 
@@ -171,9 +182,6 @@ console.log(deliveries);
 * decreases by **50% after 25 m3***/
 for(var i =0;i<deliveries.length;i++)
 	{
-		var decrease5m3=0.1;
-		var decrease10m3=0.3;
-		var decrease25m3=0.5;
 		if(deliveries[i].volume<=5)
 			{
 				//no decrease
@@ -193,6 +201,34 @@ for(var i =0;i<deliveries.length;i++)
 					
 	}
 console.log("Deliveries after exercice 2 : ");
+console.log(deliveries);
+
+//exercice 3
+/*Convargo take a 30% commission on the shipping price to cover their costs.
+
+#### Commission
+
+The commission is split like this:
+
+* **insurance**: half of commission
+* **the Treasury**: 1€ by 500km range
+* **convargo**: the rest*/
+for(var i =0;i<deliveries.length;i++)
+	{
+		
+		var commission = deliveries[i].price*comPercentage;
+		//console.log(commission);
+		deliveries[i].commission.insurance=commission*insPercentage;
+		commission-=deliveries[i].commission.insurance;
+		
+		//console.log(commission);
+		deliveries[i].commission.treasury= Math.ceil(deliveries[i].distance/treasuryRange)*treasuryFee;
+		commission-=deliveries[i].commission.treasury;
+		
+		//console.log(commission);
+		deliveries[i].commission.convargo+=commission;
+	}
+console.log("Deliveries after exercice 3 : ");
 console.log(deliveries);
 console.log(truckers);
 console.log(deliveries);
