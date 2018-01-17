@@ -46,7 +46,8 @@ var deliveries = [{
   'price': 0,
   'commission': {
     'insurance': 0,
-    'convargo': 0
+    'convargo': 0,
+	'treasury':0
   }
 }, {
   'id': '65203b0a-a864-4dea-81e2-e389515752a8',
@@ -60,7 +61,8 @@ var deliveries = [{
   'price': 0,
   'commission': {
     'insurance': 0,
-    'convargo': 0
+    'convargo': 0,
+	'treasury':0
   }
 }, {
   'id': '94dab739-bd93-44c0-9be1-52dd07baa9f6',
@@ -88,7 +90,7 @@ const actors = [{
     'type': 'debit',
     'amount': 0
   }, {
-    'who': 'owner',
+    'who': 'trucker',
     'type': 'credit',
     'amount': 0
   }, {
@@ -111,7 +113,7 @@ const actors = [{
     'type': 'debit',
     'amount': 0
   }, {
-    'who': 'owner',
+    'who': 'trucker',
     'type': 'credit',
     'amount': 0
   }, {
@@ -134,7 +136,7 @@ const actors = [{
     'type': 'debit',
     'amount': 0
   }, {
-    'who': 'owner',
+    'who': 'trucker',
     'type': 'credit',
     'amount': 0
   }, {
@@ -213,10 +215,10 @@ for(var i =0;i<deliveries.length;i++)
 		
 		var commission = deliveries[i].price*comPercentage;
 		
-		deliveries[i].commission.insurance=commission*insPercentage;
+		deliveries[i].commission.insurance+=commission*insPercentage;
 		commission-=deliveries[i].commission.insurance;
 		
-		deliveries[i].commission.treasury= Math.ceil(deliveries[i].distance/treasuryRange)*treasuryFee;
+		deliveries[i].commission.treasury+= Math.ceil(deliveries[i].distance/treasuryRange)*treasuryFee;
 		commission-=deliveries[i].commission.treasury;
 		
 		deliveries[i].commission.convargo+=commission;
@@ -251,7 +253,7 @@ for(var i =0;i<deliveries.length;i++)
 - **the insurance** receives its part of the **commission**
 - **the Treasury** receives its part of the tax **commission**
 - **convargo receives** its part of the **commission**, plus the **deductible reduction***/
-/*
+
 function GetDelivery(deliveryId)
 {
 	for(var i=0; i < deliveries.length;i++)
@@ -267,9 +269,30 @@ function GetDelivery(deliveryId)
 for(var i=0; i< actors.length;i++)
 	{
 		var delivery = GetDelivery(actors[i].deliveryId);
-		actors[i].payment
+		var commission = delivery.commission.convargo+delivery.commission.insurance+delivery.commission.treasury;
+		for(var j=0;j< actors[i].payment.length;j++)
+			{
+				switch(actors[i].payment[j].who) {
+					case "shipper":
+						actors[i].payment[j].amount+=delivery.price;
+						break;
+					case "trucker":
+						actors[i].payment[j].amount+=commission;
+						break;
+					case "insurance":
+						actors[i].payment[j].amount+=delivery.commission.insurance;
+						break;
+					case "treasury":
+						actors[i].payment[j].amount+=delivery.commission.treasury;
+						break;
+					case "convargo":
+						actors[i].payment[j].amount+=delivery.commission.convargo;
+						break;
+						
+				}
+			}
 	}
-*/
+
 console.log("Truckers :");
 console.log(truckers);
 console.log("Deliveries :");
