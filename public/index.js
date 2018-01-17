@@ -157,7 +157,7 @@ function GetTrucker(truckerId)
 for(var i =0;i<deliveries.length;i++)
 	{
 		var trucker = GetTrucker(deliveries[i].truckerId);
-		deliveries[i].price= deliveries[i].distance*trucker.pricePerKm+deliveries[i].volume*trucker.pricePerVolume;
+		deliveries[i].price+= deliveries[i].distance*trucker.pricePerKm+deliveries[i].volume*trucker.pricePerVolume;
 					
 	}
 
@@ -169,6 +169,31 @@ console.log(deliveries);
 * decreases by **10% after 5 m3**
 * decreases by **30% after 10 m3**
 * decreases by **50% after 25 m3***/
+for(var i =0;i<deliveries.length;i++)
+	{
+		var decrease5m3=0.1;
+		var decrease10m3=0.3;
+		var decrease25m3=0.5;
+		if(deliveries[i].volume<=5)
+			{
+				//no decrease
+			}
+		else if (deliveries[i].volume<=10)//between 5 and 10
+			{
+				deliveries[i].price*=decrease5m3;
+			}
+		else if (deliveries[i].volume<=25)//between 10 and 25
+			{
+				deliveries[i].price*=decrease10m3;
+			}
+		else//more than 25
+			{
+				deliveries[i].price*=decrease25m3;
+			}
+					
+	}
+console.log("Deliveries after exercice 2 : ");
+console.log(deliveries);
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
